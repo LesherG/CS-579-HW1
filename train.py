@@ -1,3 +1,4 @@
+import sys
 import models as M
 import dataloading as D
 import torch
@@ -6,7 +7,7 @@ from torch import optim
 import torchvision
 import torchvision.transforms as transforms
 
-EPOCHS = 200
+EPOCHS = 50
 BATCH_SIZE = 200
 LEARNING_RATE = 1e-3
 
@@ -21,8 +22,13 @@ device = torch.device(dev)
 
 def main():
     
+    if(sys.argv[1] == "LeNet"):
+        model = M.LeNet(datasize=32*32, inputChannels=3)
+    elif(sys.argv[1] == "VGG16"):
+        model = M.VGG16(datasize=32*32, inputChannels=3)
+    elif(sys.argv[1] == "ResNet18"):
+        model = M.ResNet18(datasize=32*32, inputChannels=3)
 
-    model = M.ResNet18(datasize=32*32, inputChannels=3)
     model.to(device)
     
     print(model)
@@ -39,6 +45,7 @@ def main():
     testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle=False, num_workers=2)
 
     train_model(model, trainloader)
+    model.save("test.pt")
 
 
     

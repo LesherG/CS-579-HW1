@@ -117,7 +117,7 @@ class VGG16(nn.Module):
         torch.save(self, "./models/VGG16/" + file)
 
 
-
+# Adapted from https://debuggercafe.com/implementing-resnet18-in-pytorch-from-scratch/
 class ResNet18(nn.Module):
     def __init__(self, numClasses = 10, datasize = 28*28, inputChannels = 1):
         super().__init__()
