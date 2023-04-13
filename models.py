@@ -1,3 +1,4 @@
+import os
 import math
 
 import torch
@@ -8,6 +9,8 @@ if torch.cuda.is_available():
 else: 
     dev = "cpu"
 cuda = torch.device(dev)
+
+
 
 
 class LeNet(nn.Module):
@@ -46,6 +49,7 @@ class LeNet(nn.Module):
         return(pred[y_pred])
 
     def save(self, file):
+        os.makedirs("./models/LeNet/", exist_ok=True)
         torch.save(self, "./models/LeNet/" + file)
 
 class VGG16(nn.Module):
@@ -114,6 +118,7 @@ class VGG16(nn.Module):
         return(pred[y_pred])
 
     def save(self, file):
+        os.makedirs("./models/VGG16/", exist_ok=True)
         torch.save(self, "./models/VGG16/" + file)
 
 
@@ -191,6 +196,7 @@ class ResNet18(nn.Module):
         return(pred[y_pred])
 
     def save(self, file):
+        os.makedirs("./models/ResNet18/", exist_ok=True)
         torch.save(self, "./models/ResNet18/" + file)
 
 
