@@ -54,20 +54,7 @@ def main():
             print("python3 train.py [NN] [data]")
             break
     
-    model = None
-
-    if(sys.argv[1] == "LeNet"):
-        model = M.LeNet(datasize=32*32, inputChannels=3)
-    elif(sys.argv[1] == "VGG16"):
-        model = M.VGG16(datasize=32*32, inputChannels=3)
-    elif(sys.argv[1] == "ResNet18"):
-        model = M.ResNet18(datasize=32*32, inputChannels=3)
-    else:
-        print("No neural net specified: Aborting")
-        return
-
-    model.to(device)
-    print(model)
+    
 
     transform = None
     trainset = None
@@ -75,7 +62,12 @@ def main():
     testset = None
     testloader = None
 
+    imageDimensions = None
+    imageChannels = None
+
     if(sys.argv[2] == "CIFAR"):
+        imageDimensions = 32
+        imageChannels = 3
         transform = transforms.Compose(
             [transforms.ToTensor(),
             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
@@ -85,6 +77,8 @@ def main():
         testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle=False, num_workers=1)
 
     elif(sys.argv[2] == "MNIST"):
+        imageDimensions = 28
+        imageChannels = 1
         transform = transforms.Compose(
             [transforms.ToTensor(),
             transforms.Normalize((0.1307,), (0.3081,))])
@@ -95,6 +89,21 @@ def main():
     else:
         print("No dataset specified: Aborting")
         return
+
+    model = None
+
+    if(sys.argv[1] == "LeNet"):
+        model = M.LeNet(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+    elif(sys.argv[1] == "VGG16"):
+        model = M.VGG16(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+    elif(sys.argv[1] == "ResNet18"):
+        model = M.ResNet18(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+    else:
+        print("No neural net specified: Aborting")
+        return
+
+    model.to(device)
+    print(model)
 
     logger = Logger(sys.argv[1], sys.argv[2])
 
