@@ -9,4 +9,4 @@
 
 module load python3/3.8
 
-python3 train.py VGG16 MNIST
+python3 train.py VGG16 CIFAR 

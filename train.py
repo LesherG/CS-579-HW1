@@ -105,10 +105,10 @@ def main():
     model.to(device)
     print(model)
 
-    logger = Logger(sys.argv[1], sys.argv[2])
+    logger = Logger(sys.argv[1], sys.argv[2] + "2")
 
     train_model(model, trainloader, testloader, logger)
-    model.save(sys.argv[2] + ".pt")
+    model.save(sys.argv[2] + "2.pt")
 
 
     
