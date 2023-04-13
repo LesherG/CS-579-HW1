@@ -10,7 +10,7 @@ module load python3/3.8
 
 for i in "LeNet" "VGG16" "ResNet18"
 do
-    for j in "MINST" "CIFAR"
+    for j in "MNIST" "CIFAR"
     do
         python3 train.py "$i" "$j"
     done

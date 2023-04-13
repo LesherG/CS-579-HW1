@@ -80,18 +80,18 @@ def main():
             [transforms.ToTensor(),
             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
         trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
-        trainloader = torch.utils.data.DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2)
+        trainloader = torch.utils.data.DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1)
         testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
-        testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle=False, num_workers=2)
+        testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle=False, num_workers=1)
 
-    elif(sys.argv[2] == "MINST"):
+    elif(sys.argv[2] == "MNIST"):
         transform = transforms.Compose(
             [transforms.ToTensor(),
             transforms.Normalize((0.1307,), (0.3081,))])
-        trainset = torchvision.datasets.MINST(root='./data', train=True, download=True, transform=transform)
-        trainloader = torch.utils.data.DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=2)
-        testset = torchvision.datasets.MINST(root='./data', train=False, download=True, transform=transform)
-        testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle=False, num_workers=2)
+        trainset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+        trainloader = torch.utils.data.DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1)
+        testset = torchvision.datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+        testloader = torch.utils.data.DataLoader(testset, batch_size=BATCH_SIZE, shuffle=False, num_workers=1)
     else:
         print("No dataset specified: Aborting")
         return
