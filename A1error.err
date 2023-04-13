@@ -1,28 +1,24 @@
-Traceback (most recent call last):
-  File "train.py", line 171, in <module>
-    main()
-  File "train.py", line 91, in main
-    trainset = torchvision.datasets.MINST(root='./data', train=True, download=True, transform=transform)
-  File "/nfs/stak/users/lesherg/.local/lib/python3.8/site-packages/torchvision/datasets/__init__.py", line 145, in __getattr__
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-AttributeError: module 'torchvision.datasets' has no attribute 'MINST'
-/var/spool/slurmd/job951729/slurm_script: line 13: 14793 Killed                  python3 train.py "$i" "$j"
-Traceback (most recent call last):
-  File "train.py", line 171, in <module>
-    main()
-  File "train.py", line 91, in main
-    trainset = torchvision.datasets.MINST(root='./data', train=True, download=True, transform=transform)
-  File "/nfs/stak/users/lesherg/.local/lib/python3.8/site-packages/torchvision/datasets/__init__.py", line 145, in __getattr__
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-AttributeError: module 'torchvision.datasets' has no attribute 'MINST'
-/var/spool/slurmd/job951729/slurm_script: line 13: 14913 Killed                  python3 train.py "$i" "$j"
-Traceback (most recent call last):
-  File "train.py", line 171, in <module>
-    main()
-  File "train.py", line 91, in main
-    trainset = torchvision.datasets.MINST(root='./data', train=True, download=True, transform=transform)
-  File "/nfs/stak/users/lesherg/.local/lib/python3.8/site-packages/torchvision/datasets/__init__.py", line 145, in __getattr__
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
-AttributeError: module 'torchvision.datasets' has no attribute 'MINST'
-/var/spool/slurmd/job951729/slurm_script: line 13: 15066 Killed                  python3 train.py "$i" "$j"
-slurmstepd: error: Detected 6 oom-kill event(s) in StepId=951729.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.
+  File "train.py", line 126
+    if e % 5 == 0:
+                 ^
+TabError: inconsistent use of tabs and spaces in indentation
+  File "train.py", line 126
+    if e % 5 == 0:
+                 ^
+TabError: inconsistent use of tabs and spaces in indentation
+  File "train.py", line 126
+    if e % 5 == 0:
+                 ^
+TabError: inconsistent use of tabs and spaces in indentation
+  File "train.py", line 126
+    if e % 5 == 0:
+                 ^
+TabError: inconsistent use of tabs and spaces in indentation
+  File "train.py", line 126
+    if e % 5 == 0:
+                 ^
+TabError: inconsistent use of tabs and spaces in indentation
+  File "train.py", line 126
+    if e % 5 == 0:
+                 ^
+TabError: inconsistent use of tabs and spaces in indentation

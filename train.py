@@ -8,7 +8,7 @@ from torch import optim
 import torchvision
 import torchvision.transforms as transforms
 
-EPOCHS = 50
+EPOCHS = 51
 BATCH_SIZE = 200
 LEARNING_RATE = 1e-3
 
@@ -122,58 +122,59 @@ def train_model(model, trainset, testset, logger):
     for e in range(EPOCHS):
         # Train set
 
-        running_loss = 0.0
-        for i, data in enumerate(trainset, 0):
-            inputs, labels = data
-            inputs = inputs.to(device)
-            labels = labels.to(device)
 
-            optimizer.zero_grad()
+	if e % 5 == 0:
+	    accuracies = []
+	    losses = []
+	    print(len(trainset) * BATCH_SIZE)
+	    for i, data in enumerate(trainset, 0):
+		inputs, labels = data
+		inputs = inputs.to(device)
+		labels = labels.to(device)
+		
+		logits = model.forward(inputs)
+		loss = loss_function(logits, labels)
 
-            logits = model.forward(inputs)
-            loss = loss_function(logits, labels)
-            loss.backward()
-            optimizer.step()
+		y_pred = torch.argmax(logits, dim = 1)
+		accuracies.append((y_pred == labels).float().mean().item())
+		losses.append(loss.item())
+		
+	    logger.writeTr(str(sum(accuracies) / len(accuracies)) + "," + str(sum(losses) / len(losses)) + "\n")
 
-            running_loss += loss.item()
-            if i % 50 == 49:    # print every 2000 mini-batches
-                print(f'[{e + 1}, {i + 1:5d}] loss: {running_loss / 50:.3f}')
-                running_loss = 0.0
+	    accuracies = []
+	    losses = []
+	    for i, data in enumerate(testset, 0):
+		inputs, labels = data
+		inputs = inputs.to(device)
+		labels = labels.to(device)
+		
+		logits = model.forward(inputs)
+		loss = loss_function(logits, labels)
 
-        if e % 5 == 0:
-            accuracies = []
-            losses = []
-            print(len(trainset) * BATCH_SIZE)
-            for i, data in enumerate(trainset, 0):
-                inputs, labels = data
-                inputs = inputs.to(device)
-                labels = labels.to(device)
-                
-                logits = model.forward(inputs)
-                loss = loss_function(logits, labels)
+		y_pred = torch.argmax(logits, dim = 1)
+		accuracies.append((y_pred == labels).float().mean().item())
+		losses.append(loss.item())
+		
+	    logger.writeTe(str(sum(accuracies) / len(accuracies)) + "," + str(sum(losses) / len(losses)) + "\n")
+    
+	    
+	running_loss = 0.0
+	for i, data in enumerate(trainset, 0):
+	    inputs, labels = data
+	    inputs = inputs.to(device)
+	    labels = labels.to(device)
 
-                y_pred = torch.argmax(logits, dim = 1)
-                accuracies.append((y_pred == labels).float().mean().item())
-                losses.append(loss.item())
-                
-            logger.writeTr(str(sum(accuracies) / len(accuracies)) + "," + str(sum(losses) / len(losses)))
+	    optimizer.zero_grad()
 
-            accuracies = []
-            losses = []
-            for i, data in enumerate(testset, 0):
-                inputs, labels = data
-                inputs = inputs.to(device)
-                labels = labels.to(device)
-                
-                logits = model.forward(inputs)
-                loss = loss_function(logits, labels)
+	    logits = model.forward(inputs)
+	    loss = loss_function(logits, labels)
+	    loss.backward()
+	    optimizer.step()
 
-                y_pred = torch.argmax(logits, dim = 1)
-                accuracies.append((y_pred == labels).float().mean().item())
-                losses.append(loss.item())
-                
-            logger.writeTe(str(sum(accuracies) / len(accuracies)) + "," + str(sum(losses) / len(losses)))
-            
+	    running_loss += loss.item()
+	    if i % 50 == 49:    # print every 2000 mini-batches
+		print(f'[{e + 1}, {i + 1:5d}] loss: {running_loss / 50:.3f}')
+		running_loss = 0.0
 
 
 if(__name__ == "__main__"):

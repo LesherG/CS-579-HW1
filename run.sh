@@ -5,14 +5,13 @@
 #SBATCH --gres=gpu:1            
 #SBATCH -o A1console.out				
 #SBATCH -e A1error.err				
+#SBATCH --mem=10G
 
 module load python3/3.8
 
-for i in "LeNet" "VGG16" "ResNet18"
-do
-    for j in "MNIST" "CIFAR"
-    do
-        python3 train.py "$i" "$j"
-    done
-done
-
+python3 train.py LeNet MNIST
+python3 train.py LeNet CIFAR
+python3 train.py VGG16 MNIST
+python3 train.py VGG16 CIFAR
+python3 train.py ResNet18 MNIST
+python3 train.py ResNet18 CIFAR
