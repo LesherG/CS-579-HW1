@@ -96,7 +96,7 @@ class VGG16(nn.Module):
             nn.ReLU(),
             nn.Conv2d(512, 512, 3, padding = 1),
             nn.ReLU(),
-            nn.MaxPool2d(2),
+            nn.MaxPool2d(2, padding=1),
 
             nn.Flatten(),
             #FC layers
