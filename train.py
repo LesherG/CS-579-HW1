@@ -8,9 +8,7 @@ from torch import optim
 import torchvision
 import torchvision.transforms as transforms
 
-EPOCHS = 51
-BATCH_SIZE = 200
-LEARNING_RATE = 1e-3
+
 
 
 if torch.cuda.is_available():
@@ -46,6 +44,8 @@ class Logger():
 
 
 def main():
+    torch.manual_seed(28)
+    '''
     if(len(sys.argv) != 3):
         print("invalid parameters.")
         return
@@ -53,8 +53,19 @@ def main():
         if arg == "-h" or arg == "--help":
             print("python3 train.py [NN] [data]")
             break
-    
-    
+    '''
+
+
+    global EPOCHS
+    EPOCHS = 50
+    global BATCH_SIZE
+    BATCH_SIZE = 200
+    global LEARNING_RATE
+    LEARNING_RATE = 1e-3
+    global OPTI
+    OPTI = "Adam"
+
+    model = None
 
     transform = None
     trainset = None
@@ -65,12 +76,105 @@ def main():
     imageDimensions = None
     imageChannels = None
 
-    if(sys.argv[2] == "CIFAR"):
+    if(sys.argv[1] == "Rotation1"):
+        imageDimensions = 28
+        imageChannels = 1
+        transform = transforms.Compose(
+            [transforms.ToTensor(),
+            transforms.Normalize((0.1307,), (0.3081,)), 
+            transforms.RandomRotation(degrees=(0, 359))])
+        model = M.LeNet(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+
+    elif(sys.argv[1] == "Rotation2"):
+        imageDimensions = 32
+        imageChannels = 3
+        transform = transforms.Compose(
+            [transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            transforms.RandomRotation(degrees=(0, 359))])
+        model = M.ResNet18(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+
+    elif(sys.argv[1] == "Flip1"):
+        imageDimensions = 28
+        imageChannels = 1
+        transform = transforms.Compose(
+            [transforms.ToTensor(),
+            transforms.Normalize((0.1307,), (0.3081,)), 
+            transforms.RandomHorizontalFlip()])
+        model = M.LeNet(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+
+    elif(sys.argv[1] == "Flip2"):
+        imageDimensions = 32
+        imageChannels = 3
+        transform = transforms.Compose(
+            [transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            transforms.RandomHorizontalFlip()])
+        model = M.ResNet18(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+
+    elif(sys.argv[1] == "Opti1"):
+        imageDimensions = 28
+        imageChannels = 1
+        transform = transforms.Compose(
+            [transforms.ToTensor(),
+            transforms.Normalize((0.1307,), (0.3081,))])
+        OPTI = "SGD"
+        model = M.LeNet(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+
+    elif(sys.argv[1] == "Opti2"):
         imageDimensions = 32
         imageChannels = 3
         transform = transforms.Compose(
             [transforms.ToTensor(),
             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        OPTI = "SGD"
+        model = M.ResNet18(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+
+    elif(sys.argv[1] == "Batch1"):
+        imageDimensions = 28
+        imageChannels = 1
+        transform = transforms.Compose(
+            [transforms.ToTensor(),
+            transforms.Normalize((0.1307,), (0.3081,))])
+        BATCH_SIZE = 1000
+        model = M.LeNet(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+
+    elif(sys.argv[1] == "Batch2"):
+        imageDimensions = 32
+        imageChannels = 3
+        transform = transforms.Compose(
+            [transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        BATCH_SIZE = 1000
+        model = M.ResNet18(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+
+    elif(sys.argv[1] == "Rate1"):
+        imageDimensions = 28
+        imageChannels = 1
+        transform = transforms.Compose(
+            [transforms.ToTensor(),
+            transforms.Normalize((0.1307,), (0.3081,))])
+        LEARNING_RATE = 1e-5
+        model = M.LeNet(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+
+    elif(sys.argv[1] == "Rate2"):
+        imageDimensions = 32
+        imageChannels = 3
+        transform = transforms.Compose(
+            [transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        LEARNING_RATE = 1e-5
+        model = M.ResNet18(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
+
+    else:
+        print("No neural net specified: Aborting")
+        return
+
+
+
+    if(sys.argv[2] == "CIFAR"):
+        imageDimensions = 32
+        imageChannels = 3
         trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
         trainloader = torch.utils.data.DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1)
         testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform)
@@ -79,9 +183,6 @@ def main():
     elif(sys.argv[2] == "MNIST"):
         imageDimensions = 28
         imageChannels = 1
-        transform = transforms.Compose(
-            [transforms.ToTensor(),
-            transforms.Normalize((0.1307,), (0.3081,))])
         trainset = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transform)
         trainloader = torch.utils.data.DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=1)
         testset = torchvision.datasets.MNIST(root='./data', train=False, download=True, transform=transform)
@@ -90,7 +191,8 @@ def main():
         print("No dataset specified: Aborting")
         return
 
-    model = None
+    '''
+    
 
     if(sys.argv[1] == "LeNet"):
         model = M.LeNet(datasize=imageDimensions * imageDimensions, inputChannels=imageChannels)
@@ -101,29 +203,33 @@ def main():
     else:
         print("No neural net specified: Aborting")
         return
+    '''
 
     model.to(device)
     print(model)
 
-    logger = Logger(sys.argv[1], sys.argv[2] + "2")
+    logger = Logger(sys.argv[1], sys.argv[2])
 
-    train_model(model, trainloader, testloader, logger)
-    model.save(sys.argv[2] + "2.pt")
+    train_model(model, trainloader, testloader, logger, OPTI, LEARNING_RATE)
+    model.save(sys.argv[1] + ".pt")
 
 
     
 
 
-def train_model(model, trainset, testset, logger):
+def train_model(model, trainset, testset, logger, opti = "Adam", lera=1e-3):
     loss_function = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(params = model.parameters(), lr = LEARNING_RATE)
+    if(opti == "Adam"):
+        optimizer = optim.Adam(params = model.parameters(), lr = lera)
+    else:
+        optimizer = optim.SGD(params=model.parameters(), lr=lera)
 
 
     for e in range(EPOCHS):
         # Train set
 
 
-        if e % 5 == 0:
+        if e % 5 == 1:
             accuracies = []
             losses = []
             print(len(trainset) * BATCH_SIZE)
