@@ -222,7 +222,7 @@ def train_model(model, trainset, testset, logger, opti = "Adam", lera=1e-3):
     if(opti == "Adam"):
         optimizer = optim.Adam(params = model.parameters(), lr = lera)
     else:
-        optimizer = optim.SGD(params=model.parameters(), lr=lera)
+        optimizer = optim.SGD(params=model.parameters(), lr=lera, momentum=0.9)
 
 
     for e in range(EPOCHS):

@@ -9,13 +9,13 @@
 
 module load python3/3.8
 
-python3 train.py Rotation1 MNIST
-python3 train.py Rotation2 CIFAR
-python3 train.py Flip1 MNIST
-python3 train.py Flip2 CIFAR
+#python3 train.py Rotation1 MNIST
+#python3 train.py Rotation2 CIFAR
+#python3 train.py Flip1 MNIST
+#python3 train.py Flip2 CIFAR
 python3 train.py Opti1 MNIST
 python3 train.py Opti2 CIFAR
-python3 train.py Batch1 MNIST
-python3 train.py Batch2 CIFAR
-python3 train.py Rate1 MNIST
+#python3 train.py Batch1 MNIST
+#python3 train.py Batch2 CIFAR
+#python3 train.py Rate1 MNIST
 python3 train.py Rate2 CIFAR
