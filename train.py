@@ -57,7 +57,7 @@ def main():
 
 
     global EPOCHS
-    EPOCHS = 50
+    EPOCHS = 51
     global BATCH_SIZE
     BATCH_SIZE = 200
     global LEARNING_RATE
@@ -229,7 +229,7 @@ def train_model(model, trainset, testset, logger, opti = "Adam", lera=1e-3):
         # Train set
 
 
-        if e % 5 == 1:
+        if e % 5 == 0:
             accuracies = []
             losses = []
             print(len(trainset) * BATCH_SIZE)
