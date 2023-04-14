@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import sys
 import os
 
-
+print(str(sys.argv))
 
 headers = ["ACC", "LOSS"]
 
@@ -20,7 +20,7 @@ count = list(range(0, 51, 5))
 
 
 fig, axs = plt.subplots(1, 2)
-fig.suptitle(sys.argv[1] + " " + sys.argv[2])
+fig.suptitle(input("Enter: "))
 fig.set_figwidth(10)
 
 
