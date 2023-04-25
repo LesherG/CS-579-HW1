@@ -7,11 +7,11 @@ print(str(sys.argv))
 
 headers = ["ACC", "LOSS"]
 
-test = pd.read_csv("./results/" + sys.argv[1] + "/" + sys.argv[2] + "/testData.csv")
+test = pd.read_csv("./results/Tests/" + sys.argv[1] + "/" + sys.argv[2] + "/testData.csv")
 teAcc = test.ACC.values
 teLoss = test.LOSS.values
 
-train = pd.read_csv("./results/" + sys.argv[1] + "/" + sys.argv[2] + "/trainData.csv")
+train = pd.read_csv("./results/Tests/" + sys.argv[1] + "/" + sys.argv[2] + "/trainData.csv")
 trAcc = train.ACC.values
 trLoss = train.LOSS.values
 

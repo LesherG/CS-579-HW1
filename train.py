@@ -1,7 +1,6 @@
 import sys
 import os
 import models as M
-import dataloading as D
 import torch
 from torch import nn
 from torch import optim
@@ -9,7 +8,13 @@ import torchvision
 import torchvision.transforms as transforms
 
 
-
+#
+# Gavin Lesher
+# 04/13/23
+#
+# Sorry for the really bad code, I was a /little/ rushed
+# I even started this 3 days in advanced...
+#
 
 if torch.cuda.is_available():
     dev = "cuda"
