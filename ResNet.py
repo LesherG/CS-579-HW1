@@ -1,5 +1,4 @@
 import os
-import math
 
 import torch
 from torch import nn
@@ -10,120 +9,8 @@ else:
     dev = "cpu"
 cuda = torch.device(dev)
 
-
-
-
-class LeNet(nn.Module):
-    def __init__(self, numClasses = 10, datasize = 28*28, inputChannels = 1):
-        super().__init__()
-        
-        convOut = int((math.sqrt(datasize) / 2) / 2 - 2)
-        self.features = nn.Sequential(
-            # C1
-            nn.Conv2d(inputChannels, 6, 5, padding = 2),
-            nn.Sigmoid(),
-            nn.AvgPool2d(2),
-            
-            # C3
-            nn.Conv2d(6, 16, 5),
-            nn.Sigmoid(),
-            nn.AvgPool2d(2),
-            nn.Flatten(),
-
-            # Dense 
-            nn.Linear(16 * convOut * convOut, 120),
-            nn.Sigmoid(),
-            nn.Linear(120, 84),
-            nn.Sigmoid(),
-            nn.Linear(84, numClasses)
-        )
-
-    def forward(self, x):
-        logits = self.features(x)
-        return logits
-
-    def predict(self, x):
-        logits = self.features(x)
-        pred = nn.Softmax(logits)
-        y_pred = torch.argmax(pred)
-        return(pred[y_pred])
-
-    def save(self, file):
-        os.makedirs("./models/LeNet/", exist_ok=True)
-        torch.save(self, "./models/LeNet/" + file)
-
-class VGG16(nn.Module):
-    def __init__(self, numClasses = 10, datasize = 28*28, inputChannels = 1):
-        super().__init__()
-
-        self.features = nn.Sequential(
-            # Conv Set 1
-            nn.Conv2d(inputChannels, 64, 3, padding = 1),
-            nn.ReLU(),
-            nn.Conv2d(64, 64, 3, padding = 1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-
-            # Conv Set 2
-            nn.Conv2d(64, 128, 3, padding = 1),
-            nn.ReLU(),
-            nn.Conv2d(128, 128, 3, padding = 1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-
-            # Conv Set 3
-            nn.Conv2d(128, 256, 3, padding = 1),
-            nn.ReLU(),
-            nn.Conv2d(256, 256, 3, padding = 1),
-            nn.ReLU(),
-            nn.Conv2d(256, 256, 3, padding = 1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-
-            # Conv Set 4
-            nn.Conv2d(256, 512, 3, padding = 1),
-            nn.ReLU(),
-            nn.Conv2d(512, 512, 3, padding = 1),
-            nn.ReLU(),
-            nn.Conv2d(512, 512, 3, padding = 1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-
-            # Conv Set 5
-            nn.Conv2d(512, 512, 3, padding = 1),
-            nn.ReLU(),
-            nn.Conv2d(512, 512, 3, padding = 1),
-            nn.ReLU(),
-            nn.Conv2d(512, 512, 3, padding = 1),
-            nn.ReLU(),
-            nn.MaxPool2d(2),
-
-            nn.Flatten(),
-            #FC layers
-            nn.Linear(512, 4096), #In an actual implementation this should not be 512 * 1. 1 should be variable depending on the input size
-            nn.ReLU(),
-            nn.Linear(4096, 4096),
-            nn.ReLU(),
-            nn.Linear(4096, numClasses)
-        )
-
-    def forward(self, x):
-        logits = self.features(x)
-        return logits
-
-    def predict(self, x):
-        logits = self.features(x)
-        pred = nn.Softmax(logits)
-        y_pred = torch.argmax(pred)
-        return(pred[y_pred])
-
-    def save(self, file):
-        os.makedirs("./models/VGG16/", exist_ok=True)
-        torch.save(self, "./models/VGG16/" + file)
-
-
 # Adapted from https://debuggercafe.com/implementing-resnet18-in-pytorch-from-scratch/
-class ResNet18(nn.Module):
+class ResNet(nn.Module):
     def __init__(self, numClasses = 10, datasize = 28*28, inputChannels = 1):
         super().__init__()
         
